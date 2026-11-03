@@ -1,0 +1,54 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 220 20% 14%;
+    --card: 0 0% 100%;
+    --card-foreground: 220 20% 14%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 220 20% 14%;
+    --primary: 153 48% 21%; /* Rope4 Forest Green #1B4D3E */
+    --primary-foreground: 0 0% 100%;
+    --secondary: 140 20% 96%;
+    --secondary-foreground: 153 48% 21%;
+    --muted: 140 15% 95%;
+    --muted-foreground: 215 16% 45%;
+    --accent: 142 60% 36%; /* Emerald Green #2E7D32 */
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 140 15% 90%;
+    --input: 140 15% 90%;
+    --ring: 153 48% 21%;
+    --radius: 0.75rem;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+  }
+}
+
+/* Custom scrollbar for clean aesthetics */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: hsl(var(--background));
+}
+::-webkit-scrollbar-thumb {
+  background: hsl(var(--muted-foreground) / 0.3);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: hsl(var(--primary) / 0.6);
+}
+
