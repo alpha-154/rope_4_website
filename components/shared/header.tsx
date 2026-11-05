@@ -1,40 +1,92 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Mountain, Search, Menu, X, ChevronDown, User, Heart, ShoppingBag } from "lucide-react";
+import { publicApiClient } from "@/lib/axios";
 
 export function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [adventuresOpen, setAdventuresOpen] = useState(false);
+  const [settings, setSettings] = useState<any>(null);
+
+  useEffect(() => {
+    let isMounted = true;
+    publicApiClient
+      .get("/public/settings/navigation")
+      .then((res) => {
+        if (isMounted && res.data?.data) {
+          setSettings(res.data.data);
+        }
+      })
+      .catch(() => {
+        // Graceful fallback to static defaults if backend offline
+      });
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
+  const header = settings?.header;
+  const showAnnouncement = header?.announcementBar?.enabled ?? true;
+  const announcementText =
+    header?.announcementBar?.text || "🌲 Outdoor Education & Wilderness Safety Certified";
+  const hotlinePhone = header?.quickContact?.phone || "+880 1700-000000";
+  const hotlineEmail = header?.quickContact?.email || "contact@rope4.org";
+  const brandName = header?.brandName || "Rope4";
+  const ctaLabel = header?.ctaButton?.label || "Customer Login";
+  const ctaLink = header?.ctaButton?.link || "/customer/login";
 
   return (
     <header className="sticky top-0 z-50 w-full bg-white/95 backdrop-blur-md border-b border-border transition-all">
       {/* Top micro bar for announcements & contact */}
-      <div className="bg-primary text-primary-foreground text-xs py-1.5 px-4 sm:px-8 flex items-center justify-between">
-        <div className="flex items-center gap-4">
-          <span>🌲 Outdoor Education & Wilderness Safety Certified</span>
-          <span className="hidden md:inline">|</span>
-          <span className="hidden md:inline">Tagline: Learn and Share</span>
+      {showAnnouncement && (
+        <div className="bg-primary text-primary-foreground text-xs py-1.5 px-4 sm:px-8 flex items-center justify-between">
+          <div className="flex items-center gap-4">
+            <span>{announcementText}</span>
+            {header?.announcementBar?.linkUrl && (
+              <>
+                <span className="hidden md:inline">|</span>
+                <Link
+                  href={header.announcementBar.linkUrl}
+                  className="hidden md:inline underline hover:text-white/80"
+                >
+                  {header.announcementBar.linkText || "Learn More"}
+                </Link>
+              </>
+            )}
+          </div>
+          <div className="flex items-center gap-4">
+            <a href={`tel:${hotlinePhone.replace(/\s+/g, "")}`} className="hover:underline">
+              {hotlinePhone}
+            </a>
+            <span className="hidden sm:inline">{hotlineEmail}</span>
+          </div>
         </div>
-        <div className="flex items-center gap-4">
-          <a href="tel:+8801700000000" className="hover:underline">
-            +880 1700-000000
-          </a>
-          <span>contact@rope4.org</span>
-        </div>
-      </div>
+      )}
 
       {/* Main navigation bar */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-4">
         {/* Brand Logo */}
         <Link href="/" className="flex items-center gap-3 group">
-          <div className="h-11 w-11 rounded-xl bg-primary flex items-center justify-center text-primary-foreground shadow-md group-hover:scale-105 transition-transform">
-            <Mountain className="h-6 w-6" />
+          <div className="h-11 w-11 rounded-xl bg-primary flex items-center justify-center text-primary-foreground shadow-md group-hover:scale-105 transition-transform overflow-hidden">
+            {header?.logoUrl ? (
+              /* eslint-disable-next-line @next/next/no-img-element */
+              <img
+                src={header.logoUrl}
+                alt={brandName}
+                className="h-8 w-8 object-contain"
+                onError={(e) => {
+                  (e.target as HTMLElement).style.display = "none";
+                }}
+              />
+            ) : (
+              <Mountain className="h-6 w-6" />
+            )}
           </div>
           <div>
             <div className="font-extrabold text-xl tracking-tight text-primary flex items-center gap-1">
-              Rope4
+              {brandName}
             </div>
             <p className="text-[10px] uppercase tracking-wider text-muted-foreground font-semibold">
               Outdoor Education
@@ -85,21 +137,40 @@ export function Header() {
             </div>
           </div>
 
-          <Link href="/programs" className="hover:text-primary transition-colors">
-            All Programs
-          </Link>
-          <Link href="/store" className="hover:text-primary transition-colors">
-            Gear Store
-          </Link>
-          <Link href="/news" className="hover:text-primary transition-colors">
-            Stay Informed
-          </Link>
-          <Link href="/faqs" className="hover:text-primary transition-colors">
-            FAQs
-          </Link>
-          <Link href="/contact" className="hover:text-primary transition-colors">
-            Contact Us
-          </Link>
+          {header?.navItems && header.navItems.length > 0 ? (
+            header.navItems.map((item: any, idx: number) => (
+              <Link
+                key={idx}
+                href={item.href || "#"}
+                className="hover:text-primary transition-colors flex items-center gap-1.5"
+              >
+                <span>{item.label}</span>
+                {item.badge && (
+                  <span className="px-1.5 py-0.5 text-[10px] font-bold uppercase rounded-full bg-primary/10 text-primary">
+                    {item.badge}
+                  </span>
+                )}
+              </Link>
+            ))
+          ) : (
+            <>
+              <Link href="/programs" className="hover:text-primary transition-colors">
+                All Programs
+              </Link>
+              <Link href="/store" className="hover:text-primary transition-colors">
+                Gear Store
+              </Link>
+              <Link href="/news" className="hover:text-primary transition-colors">
+                Stay Informed
+              </Link>
+              <Link href="/faqs" className="hover:text-primary transition-colors">
+                FAQs
+              </Link>
+              <Link href="/contact" className="hover:text-primary transition-colors">
+                Contact Us
+              </Link>
+            </>
+          )}
         </nav>
 
         {/* Right Action Icons & CTA */}
@@ -126,11 +197,11 @@ export function Header() {
             <ShoppingBag className="h-5 w-5" />
           </Link>
           <Link
-            href="/customer/login"
+            href={ctaLink}
             className="hidden sm:inline-flex items-center justify-center gap-2 px-4 py-2 rounded-lg bg-primary text-primary-foreground text-sm font-medium hover:bg-primary/90 transition-colors shadow-sm"
           >
             <User className="h-4 w-4" />
-            <span>Sign In</span>
+            <span>{ctaLabel}</span>
           </Link>
 
           {/* Mobile hamburger menu */}
@@ -146,49 +217,64 @@ export function Header() {
       {/* Mobile Drawer */}
       {mobileMenuOpen && (
         <div className="lg:hidden bg-white border-b border-border px-4 pt-3 pb-6 space-y-3">
-          <Link
-            href="/programs"
-            onClick={() => setMobileMenuOpen(false)}
-            className="block px-3 py-2 rounded-md text-base font-medium hover:bg-muted"
-          >
-            All Programs
-          </Link>
-          <Link
-            href="/store"
-            onClick={() => setMobileMenuOpen(false)}
-            className="block px-3 py-2 rounded-md text-base font-medium hover:bg-muted"
-          >
-            Gear Store
-          </Link>
-          <Link
-            href="/news"
-            onClick={() => setMobileMenuOpen(false)}
-            className="block px-3 py-2 rounded-md text-base font-medium hover:bg-muted"
-          >
-            Stay Informed
-          </Link>
-          <Link
-            href="/faqs"
-            onClick={() => setMobileMenuOpen(false)}
-            className="block px-3 py-2 rounded-md text-base font-medium hover:bg-muted"
-          >
-            FAQs
-          </Link>
-          <Link
-            href="/contact"
-            onClick={() => setMobileMenuOpen(false)}
-            className="block px-3 py-2 rounded-md text-base font-medium hover:bg-muted"
-          >
-            Contact
-          </Link>
+          {header?.navItems && header.navItems.length > 0 ? (
+            header.navItems.map((item: any, idx: number) => (
+              <Link
+                key={idx}
+                href={item.href || "#"}
+                onClick={() => setMobileMenuOpen(false)}
+                className="block px-3 py-2 rounded-md text-base font-medium hover:bg-muted"
+              >
+                {item.label}
+              </Link>
+            ))
+          ) : (
+            <>
+              <Link
+                href="/programs"
+                onClick={() => setMobileMenuOpen(false)}
+                className="block px-3 py-2 rounded-md text-base font-medium hover:bg-muted"
+              >
+                All Programs
+              </Link>
+              <Link
+                href="/store"
+                onClick={() => setMobileMenuOpen(false)}
+                className="block px-3 py-2 rounded-md text-base font-medium hover:bg-muted"
+              >
+                Gear Store
+              </Link>
+              <Link
+                href="/news"
+                onClick={() => setMobileMenuOpen(false)}
+                className="block px-3 py-2 rounded-md text-base font-medium hover:bg-muted"
+              >
+                Stay Informed
+              </Link>
+              <Link
+                href="/faqs"
+                onClick={() => setMobileMenuOpen(false)}
+                className="block px-3 py-2 rounded-md text-base font-medium hover:bg-muted"
+              >
+                FAQs
+              </Link>
+              <Link
+                href="/contact"
+                onClick={() => setMobileMenuOpen(false)}
+                className="block px-3 py-2 rounded-md text-base font-medium hover:bg-muted"
+              >
+                Contact
+              </Link>
+            </>
+          )}
           <div className="pt-2">
             <Link
-              href="/customer/login"
+              href={ctaLink}
               onClick={() => setMobileMenuOpen(false)}
               className="w-full flex items-center justify-center gap-2 py-2.5 rounded-lg bg-primary text-primary-foreground font-medium text-sm"
             >
               <User className="h-4 w-4" />
-              <span>Customer Login</span>
+              <span>{ctaLabel}</span>
             </Link>
           </div>
         </div>
@@ -196,4 +282,3 @@ export function Header() {
     </header>
   );
 }
-
