@@ -4,11 +4,15 @@ import Link from "next/link";
 import { useState, useEffect } from "react";
 import { Mountain, Search, Menu, X, ChevronDown, User, Heart, ShoppingBag } from "lucide-react";
 import { publicApiClient } from "@/lib/axios";
+import { useCart } from "@/lib/cart-context";
+import { useCustomerAuth } from "@/lib/customer-auth-context";
 
 export function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [adventuresOpen, setAdventuresOpen] = useState(false);
   const [settings, setSettings] = useState<any>(null);
+  const { totalUnits, setIsDrawerOpen } = useCart();
+  const { customer, isAuthenticated } = useCustomerAuth();
 
   useEffect(() => {
     let isMounted = true;
@@ -189,19 +193,24 @@ export function Header() {
           >
             <Heart className="h-5 w-5" />
           </Link>
-          <Link
-            href="/cart"
+          <button
+            onClick={() => setIsDrawerOpen(true)}
             className="p-2.5 rounded-full hover:bg-muted text-muted-foreground hover:text-foreground transition-colors relative"
             title="Cart"
           >
             <ShoppingBag className="h-5 w-5" />
-          </Link>
+            {totalUnits > 0 && (
+              <span className="absolute -top-1 -right-1 h-5 w-5 rounded-full bg-accent text-accent-foreground text-[10px] font-bold flex items-center justify-center shadow">
+                {totalUnits}
+              </span>
+            )}
+          </button>
           <Link
-            href={ctaLink}
+            href={isAuthenticated ? "/customer/profile" : "/customer/login"}
             className="hidden sm:inline-flex items-center justify-center gap-2 px-4 py-2 rounded-lg bg-primary text-primary-foreground text-sm font-medium hover:bg-primary/90 transition-colors shadow-sm"
           >
             <User className="h-4 w-4" />
-            <span>{ctaLabel}</span>
+            <span>{isAuthenticated ? (customer?.firstName || "Account") : "Sign In"}</span>
           </Link>
 
           {/* Mobile hamburger menu */}
@@ -269,12 +278,12 @@ export function Header() {
           )}
           <div className="pt-2">
             <Link
-              href={ctaLink}
+              href={isAuthenticated ? "/customer/profile" : "/customer/login"}
               onClick={() => setMobileMenuOpen(false)}
               className="w-full flex items-center justify-center gap-2 py-2.5 rounded-lg bg-primary text-primary-foreground font-medium text-sm"
             >
               <User className="h-4 w-4" />
-              <span>{ctaLabel}</span>
+              <span>{isAuthenticated ? `${customer?.firstName || "Traveler"}'s Profile` : "Customer Sign In"}</span>
             </Link>
           </div>
         </div>

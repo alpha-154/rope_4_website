@@ -3,7 +3,10 @@ import "./globals.css";
 import { Header } from "@/components/shared/header";
 import { Footer } from "@/components/shared/footer";
 import { FloatingWidgets } from "@/components/shared/floating-widgets";
+import { CartDrawer } from "@/components/shared/cart-drawer";
 import { ReactQueryProvider } from "@/lib/react-query";
+import { CartProvider } from "@/lib/cart-context";
+import { CustomerAuthProvider } from "@/lib/customer-auth-context";
 import { Toaster } from "sonner";
 
 export const metadata: Metadata = {
@@ -21,11 +24,16 @@ export default function RootLayout({
     <html lang="en">
       <body className="min-h-screen flex flex-col bg-background font-sans text-foreground">
         <ReactQueryProvider>
-          <Header />
-          <main className="flex-1">{children}</main>
-          <Footer />
-          <FloatingWidgets />
-          <Toaster richColors position="top-right" />
+          <CustomerAuthProvider>
+            <CartProvider>
+              <Header />
+              <main className="flex-1">{children}</main>
+              <Footer />
+              <FloatingWidgets />
+              <CartDrawer />
+              <Toaster richColors position="top-right" />
+            </CartProvider>
+          </CustomerAuthProvider>
         </ReactQueryProvider>
       </body>
     </html>
