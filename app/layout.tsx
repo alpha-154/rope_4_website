@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { Header } from "@/components/shared/header";
 import { Footer } from "@/components/shared/footer";
+import { FloatingWidgets } from "@/components/shared/floating-widgets";
 import { ReactQueryProvider } from "@/lib/react-query";
 import { Toaster } from "sonner";
 
@@ -23,6 +24,7 @@ export default function RootLayout({
           <Header />
           <main className="flex-1">{children}</main>
           <Footer />
+          <FloatingWidgets />
           <Toaster richColors position="top-right" />
         </ReactQueryProvider>
       </body>
