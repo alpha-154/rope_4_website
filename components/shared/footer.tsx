@@ -62,7 +62,7 @@ export function Footer() {
                     key={idx}
                     href={s.url || "#"}
                     target="_blank"
-                    rel="noreferrer"
+                    rel="noopener noreferrer"
                     className="h-9 w-9 rounded-full bg-emerald-900/60 flex items-center justify-center hover:bg-emerald-800 transition-colors text-xs font-semibold text-white uppercase"
                     title={s.platform}
                   >
@@ -74,7 +74,7 @@ export function Footer() {
                   <a
                     href="https://facebook.com"
                     target="_blank"
-                    rel="noreferrer"
+                    rel="noopener noreferrer"
                     className="h-9 w-9 rounded-full bg-emerald-900/60 flex items-center justify-center hover:bg-emerald-800 transition-colors"
                   >
                     <Facebook className="h-4 w-4" />
@@ -82,7 +82,7 @@ export function Footer() {
                   <a
                     href="https://instagram.com"
                     target="_blank"
-                    rel="noreferrer"
+                    rel="noopener noreferrer"
                     className="h-9 w-9 rounded-full bg-emerald-900/60 flex items-center justify-center hover:bg-emerald-800 transition-colors"
                   >
                     <Instagram className="h-4 w-4" />
@@ -90,7 +90,7 @@ export function Footer() {
                   <a
                     href="https://youtube.com"
                     target="_blank"
-                    rel="noreferrer"
+                    rel="noopener noreferrer"
                     className="h-9 w-9 rounded-full bg-emerald-900/60 flex items-center justify-center hover:bg-emerald-800 transition-colors"
                   >
                     <Youtube className="h-4 w-4" />
@@ -98,7 +98,7 @@ export function Footer() {
                   <a
                     href="https://linkedin.com"
                     target="_blank"
-                    rel="noreferrer"
+                    rel="noopener noreferrer"
                     className="h-9 w-9 rounded-full bg-emerald-900/60 flex items-center justify-center hover:bg-emerald-800 transition-colors"
                   >
                     <Linkedin className="h-4 w-4" />

@@ -66,7 +66,7 @@ export function FloatingWidgets() {
         <a
           href="https://wa.me/8801700000000"
           target="_blank"
-          rel="noreferrer"
+          rel="noopener noreferrer"
           className="flex items-center gap-2 px-3.5 py-2.5 rounded-full bg-emerald-900/90 hover:bg-emerald-800 text-white text-xs font-semibold shadow-lg backdrop-blur-md border border-emerald-700/40 hover:scale-105 transition-all"
         >
           <div className="h-5 w-5 rounded-full bg-emerald-500 flex items-center justify-center text-white">

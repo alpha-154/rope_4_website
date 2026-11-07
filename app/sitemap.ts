@@ -1,4 +1,7 @@
 import { MetadataRoute } from "next";
+import { publicApiClient } from "@/lib/axios";
+
+export const revalidate = 3600; // Revalidate dynamic sitemap every hour
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://rope4.com";
@@ -18,8 +21,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: route === "" ? 1.0 : 0.8,
   }));
 
-  // Expedition Programs
-  const programSlugs = [
+  // Known fallback slugs for build resilience
+  const fallbackProgramSlugs = [
     "everest-base-camp-kala-patthar",
     "annapurna-circuit-thorong-la-pass",
     "keokradong-nafakhum-wilderness",
@@ -28,15 +31,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     "certified-basic-mountaineering-rigging-course",
   ];
 
-  const programRoutes = programSlugs.map((slug) => ({
-    url: `${baseUrl}/programs/${slug}`,
-    lastModified: new Date(),
-    changeFrequency: "weekly" as const,
-    priority: 0.9,
-  }));
-
-  // Gear Store Products
-  const productSlugs = [
+  const fallbackProductSlugs = [
     "osprey-atmos-ag-65l-expedition-rucksack",
     "black-diamond-distance-z-trekking-poles",
     "the-north-face-inferno-down-sleeping-bag",
@@ -44,6 +39,32 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     "scarpa-ribelle-tech-waterproof-mountaineering-boots",
     "msr-hubba-hubba-nx-2p-tent",
   ];
+
+  let programSlugs = fallbackProgramSlugs;
+  let productSlugs = fallbackProductSlugs;
+
+  try {
+    const [progRes, prodRes] = await Promise.all([
+      publicApiClient.get("/public/programs?limit=100"),
+      publicApiClient.get("/public/products?limit=100"),
+    ]);
+
+    if (progRes.data?.data?.items?.length > 0) {
+      programSlugs = progRes.data.data.items.map((p: any) => p.slug);
+    }
+    if (prodRes.data?.data?.items?.length > 0) {
+      productSlugs = prodRes.data.data.items.map((p: any) => p.slug);
+    }
+  } catch {
+    // Graceful fallback to static list if API unavailable during build
+  }
+
+  const programRoutes = programSlugs.map((slug) => ({
+    url: `${baseUrl}/programs/${slug}`,
+    lastModified: new Date(),
+    changeFrequency: "weekly" as const,
+    priority: 0.9,
+  }));
 
   const productRoutes = productSlugs.map((slug) => ({
     url: `${baseUrl}/store/${slug}`,

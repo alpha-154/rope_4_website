@@ -226,6 +226,42 @@ export function Header() {
       {/* Mobile Drawer */}
       {mobileMenuOpen && (
         <div className="lg:hidden bg-white border-b border-border px-4 pt-3 pb-6 space-y-3">
+          <div className="pb-2 border-b border-stone-100">
+            <p className="text-xs font-bold uppercase tracking-wider text-muted-foreground px-3 mb-1">
+              Adventure Categories
+            </p>
+            <div className="grid grid-cols-2 gap-1">
+              <Link
+                href="/programs?category=Premium+Trip"
+                onClick={() => setMobileMenuOpen(false)}
+                className="px-3 py-1.5 rounded-md text-xs font-semibold text-primary hover:bg-muted"
+              >
+                Premium Treks
+              </Link>
+              <Link
+                href="/programs?category=Summer+Camp"
+                onClick={() => setMobileMenuOpen(false)}
+                className="px-3 py-1.5 rounded-md text-xs font-semibold text-primary hover:bg-muted"
+              >
+                Summer Camps
+              </Link>
+              <Link
+                href="/programs?category=Family+Treks"
+                onClick={() => setMobileMenuOpen(false)}
+                className="px-3 py-1.5 rounded-md text-xs font-semibold text-primary hover:bg-muted"
+              >
+                Family Treks
+              </Link>
+              <Link
+                href="/programs?category=Learning+Program"
+                onClick={() => setMobileMenuOpen(false)}
+                className="px-3 py-1.5 rounded-md text-xs font-semibold text-primary hover:bg-muted"
+              >
+                Courses & Academy
+              </Link>
+            </div>
+          </div>
+
           {header?.navItems && header.navItems.length > 0 ? (
             header.navItems.map((item: any, idx: number) => (
               <Link
