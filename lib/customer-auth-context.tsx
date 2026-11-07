@@ -239,3 +239,4 @@ export function useCustomerAuth() {
   }
   return context;
 }
+

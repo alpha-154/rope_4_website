@@ -188,8 +188,43 @@ export default function ProgramDetailPage() {
 
   const isSaved = isWishlisted(program._id);
 
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "TouristTrip",
+    name: program.title,
+    description: program.shortDescription || program.summary,
+    touristType: ["Mountaineers", "Trekkers", "Adventurers"],
+    offers: {
+      "@type": "Offer",
+      price: program.price?.amount || 0,
+      priceCurrency: program.price?.currency || "BDT",
+      availability: "https://schema.org/InStock",
+    },
+    provider: {
+      "@type": "Organization",
+      name: "Rope4 Outdoor Education",
+      url: "https://rope4.com",
+      telephone: "+8801711767344",
+    },
+    itinerary: {
+      "@type": "ItemList",
+      numberOfItems: program.itinerary?.length || 0,
+      itemListElement: (program.itinerary || []).map((day: any) => ({
+        "@type": "ListItem",
+        position: day.day,
+        name: day.title,
+        description: day.description,
+      })),
+    },
+  };
+
   return (
     <div className="space-y-12 pb-24">
+      {/* JSON-LD Structured Data */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       {/* 1. HERO HEADER & PHOTO GALLERY */}
       <section className="bg-emerald-950 text-white pt-8 pb-14 border-b border-emerald-900">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">

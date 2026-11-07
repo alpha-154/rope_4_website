@@ -9,10 +9,66 @@ import { CartProvider } from "@/lib/cart-context";
 import { CustomerAuthProvider } from "@/lib/customer-auth-context";
 import { Toaster } from "sonner";
 
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://rope4.com";
+
 export const metadata: Metadata = {
-  title: "Rope4 | Outdoor Education, Treks & Adventures Worldwide",
+  metadataBase: new URL(siteUrl),
+  title: {
+    default: "Rope4 | Outdoor Education, Treks & Expeditions Worldwide",
+    template: "%s | Rope4 Outdoor Education",
+  },
   description:
-    "Rope4 Outdoor Education offers certified mountaineering programs, youth survival camps, family treks, and adventure gear worldwide. Learn and Share.",
+    "Rope4 Outdoor Education offers certified mountaineering programs, youth survival camps, family treks, and alpine adventure gear. Learn, Share, and Explore with certified guides.",
+  keywords: [
+    "Mountaineering Bangladesh",
+    "Everest Base Camp Trek",
+    "Annapurna Circuit",
+    "Bandarban Trekking",
+    "Keokradong Summit",
+    "Youth Wilderness Summer Camp",
+    "Rope4 Outdoor Education",
+    "Adventure Gear Store",
+    "Rock Climbing Courses",
+  ],
+  authors: [{ name: "Rope4 Outdoor Education", url: siteUrl }],
+  creator: "Rope4",
+  openGraph: {
+    type: "website",
+    locale: "en_US",
+    url: siteUrl,
+    title: "Rope4 | Outdoor Education, Treks & Expeditions Worldwide",
+    description:
+      "Certified mountaineering courses, high-altitude Himalayan expeditions, youth wilderness survival camps, and mountain-grade gear.",
+    siteName: "Rope4 Outdoor Education",
+    images: [
+      {
+        url: "https://images.unsplash.com/photo-1486870591958-9b9d0d1dda99?q=80&w=1200&auto=format&fit=crop",
+        width: 1200,
+        height: 630,
+        alt: "Rope4 High Altitude Expedition",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Rope4 | Outdoor Education & Mountain Expeditions",
+    description:
+      "Join certified mountaineers on high-altitude expeditions, youth survival camps, and professional climbing courses.",
+    images: [
+      "https://images.unsplash.com/photo-1486870591958-9b9d0d1dda99?q=80&w=1200&auto=format&fit=crop",
+    ],
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
 };
 
 export default function RootLayout({

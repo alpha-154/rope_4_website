@@ -132,8 +132,40 @@ export default function ProductDetailPage() {
     router.push("/checkout");
   };
 
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    name: product.title,
+    image: product.images || [],
+    description: product.shortDescription || product.description,
+    sku: product.sku,
+    brand: {
+      "@type": "Brand",
+      name: product.brand || "Rope4",
+    },
+    offers: {
+      "@type": "Offer",
+      url: `https://rope4.com/store/${product.slug}`,
+      priceCurrency: "BDT",
+      price: product.price,
+      availability:
+        product.stockQuantity > 0
+          ? "https://schema.org/InStock"
+          : "https://schema.org/OutOfStock",
+      seller: {
+        "@type": "Organization",
+        name: "Rope4 Outdoor Education",
+      },
+    },
+  };
+
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-12">
+      {/* JSON-LD Product Schema */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       {/* Breadcrumb */}
       <div className="flex items-center gap-2 text-xs text-muted-foreground">
         <Link href="/" className="hover:underline">
@@ -340,3 +372,4 @@ export default function ProductDetailPage() {
     </div>
   );
 }
+

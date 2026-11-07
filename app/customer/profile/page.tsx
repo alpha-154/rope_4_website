@@ -547,3 +547,4 @@ export default function CustomerProfilePage() {
     </div>
   );
 }
+
