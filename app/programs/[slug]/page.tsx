@@ -595,7 +595,7 @@ export default function ProgramDetailPage() {
                 Standard Fee Per Person
               </span>
               <div className="text-3xl font-extrabold text-foreground mt-1">
-                {program.price ? `${program.price.toLocaleString()} ${program.currency || "BDT"}` : "Inquire"}
+                {program.price ? `${program.price.toLocaleString("en-US")} ${program.currency || "BDT"}` : "Inquire"}
               </div>
               <p className="text-[11px] text-muted-foreground mt-0.5">
                 All food, permits, mountain crew & transport included.

@@ -201,7 +201,7 @@ export default function CustomerOrdersPage() {
                       <div className="text-left md:text-right">
                         <p className="text-xs text-gray-400 font-medium uppercase tracking-wider">Total</p>
                         <p className="text-lg font-bold text-forest-800">
-                          ৳{(order.totalAmount || 0).toLocaleString()}
+                          ৳{(order.totalAmount || 0).toLocaleString("en-US")}
                         </p>
                       </div>
                       <button className="text-gray-400 hover:text-gray-600 p-1">
@@ -249,7 +249,7 @@ export default function CustomerOrdersPage() {
                               </div>
                             </div>
                             <div className="text-sm font-semibold text-gray-900">
-                              ৳{(item.price * item.quantity).toLocaleString()}
+                              ৳{(item.price * item.quantity).toLocaleString("en-US")}
                             </div>
                           </div>
                         ))}

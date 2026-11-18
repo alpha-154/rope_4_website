@@ -42,6 +42,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   let programSlugs = fallbackProgramSlugs;
   let productSlugs = fallbackProductSlugs;
+  let categorySlugs: string[] = [];
+  let newsSlugs: string[] = [];
 
   try {
     const [progRes, prodRes] = await Promise.all([
@@ -49,14 +51,33 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       publicApiClient.get("/public/products?limit=100"),
     ]);
 
-    if (progRes.data?.data?.items?.length > 0) {
-      programSlugs = progRes.data.data.items.map((p: any) => p.slug);
+    const progs = Array.isArray(progRes.data?.data) ? progRes.data.data : progRes.data?.data?.items;
+    if (progs?.length > 0) {
+      programSlugs = progs.map((p: any) => p.slug);
     }
     if (prodRes.data?.data?.items?.length > 0) {
       productSlugs = prodRes.data.data.items.map((p: any) => p.slug);
     }
   } catch {
     // Graceful fallback to static list if API unavailable during build
+  }
+
+  try {
+    const catRes = await publicApiClient.get("/public/categories");
+    if (Array.isArray(catRes.data?.data)) {
+      categorySlugs = catRes.data.data.map((c: any) => c.slug);
+    }
+  } catch {
+    // Categories are optional in the sitemap
+  }
+
+  try {
+    const newsRes = await publicApiClient.get("/public/news?limit=200");
+    if (Array.isArray(newsRes.data?.data)) {
+      newsSlugs = newsRes.data.data.map((n: any) => n.slug);
+    }
+  } catch {
+    // Articles are optional in the sitemap
   }
 
   const programRoutes = programSlugs.map((slug) => ({
@@ -73,5 +94,19 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.8,
   }));
 
-  return [...staticRoutes, ...programRoutes, ...productRoutes];
+  const categoryRoutes = categorySlugs.map((slug) => ({
+    url: `${baseUrl}/category/${slug}`,
+    lastModified: new Date(),
+    changeFrequency: "weekly" as const,
+    priority: 0.85,
+  }));
+
+  const newsRoutes = newsSlugs.map((slug) => ({
+    url: `${baseUrl}/news/${slug}`,
+    lastModified: new Date(),
+    changeFrequency: "monthly" as const,
+    priority: 0.7,
+  }));
+
+  return [...staticRoutes, ...categoryRoutes, ...programRoutes, ...newsRoutes, ...productRoutes];
 }

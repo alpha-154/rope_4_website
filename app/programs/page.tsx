@@ -531,7 +531,7 @@ function ProgramsContent() {
                           </span>
                           <span className="text-lg font-extrabold text-foreground">
                             {prog.price
-                              ? `${prog.price.toLocaleString()} ${prog.currency || "BDT"}`
+                              ? `${prog.price.toLocaleString("en-US")} ${prog.currency || "BDT"}`
                               : "Inquire"}
                           </span>
                         </div>

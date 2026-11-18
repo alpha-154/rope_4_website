@@ -500,11 +500,11 @@ export default function CheckoutPage() {
                           </p>
                         )}
                         <p className="text-xs text-gray-500 mt-0.5">
-                          ৳{item.price.toLocaleString()} × {item.quantity}
+                          ৳{item.price.toLocaleString("en-US")} × {item.quantity}
                         </p>
                       </div>
                       <div className="text-sm font-bold text-gray-900 text-right">
-                        ৳{(item.price * item.quantity).toLocaleString()}
+                        ৳{(item.price * item.quantity).toLocaleString("en-US")}
                       </div>
                     </div>
                   ))}
@@ -514,15 +514,15 @@ export default function CheckoutPage() {
                 <div className="space-y-2.5 pt-4 border-t border-stone-100 text-sm">
                   <div className="flex justify-between text-gray-600">
                     <span>Subtotal</span>
-                    <span className="font-medium text-gray-900">৳{subtotal.toLocaleString()}</span>
+                    <span className="font-medium text-gray-900">৳{subtotal.toLocaleString("en-US")}</span>
                   </div>
                   <div className="flex justify-between text-gray-600">
                     <span>Shipping Fee</span>
-                    <span className="font-medium text-gray-900">৳{shippingFee.toLocaleString()}</span>
+                    <span className="font-medium text-gray-900">৳{shippingFee.toLocaleString("en-US")}</span>
                   </div>
                   <div className="flex justify-between text-base font-bold text-gray-900 pt-3 border-t border-stone-100">
                     <span>Total Amount</span>
-                    <span className="text-forest-800 text-lg">৳{grandTotal.toLocaleString()}</span>
+                    <span className="text-forest-800 text-lg">৳{grandTotal.toLocaleString("en-US")}</span>
                   </div>
                   <p className="text-[11px] text-gray-400">Includes all local taxes and packaging fees.</p>
                 </div>
@@ -541,7 +541,7 @@ export default function CheckoutPage() {
                   ) : (
                     <>
                       <PackageCheck className="w-5 h-5" />
-                      Place Order (৳{grandTotal.toLocaleString()})
+                      Place Order (৳{grandTotal.toLocaleString("en-US")})
                     </>
                   )}
                 </button>

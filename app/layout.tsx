@@ -8,6 +8,15 @@ import { ReactQueryProvider } from "@/lib/react-query";
 import { CartProvider } from "@/lib/cart-context";
 import { CustomerAuthProvider } from "@/lib/customer-auth-context";
 import { Toaster } from "sonner";
+import { Montserrat } from "next/font/google";
+import { IntroVideo, INTRO_GATE_SCRIPT } from "@/components/shared/intro-video";
+
+const montserrat = Montserrat({
+  subsets: ["latin"],
+  weight: ["700", "800"],
+  variable: "--font-montserrat",
+  display: "swap",
+});
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://rope4.com";
 
@@ -77,8 +86,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    // suppressHydrationWarning: the gate script may add data-intro before React hydrates
+    <html lang="en" className={montserrat.variable} suppressHydrationWarning>
+      <head>
+        {/* Runs before first paint: decides whether the intro plays so the page never flashes first */}
+        <script dangerouslySetInnerHTML={{ __html: INTRO_GATE_SCRIPT }} />
+      </head>
       <body className="min-h-screen flex flex-col bg-background font-sans text-foreground">
+        {/* Server-rendered cover, visible only while html[data-intro="pending"] */}
+        <div className="intro-cover" aria-hidden="true" />
         <ReactQueryProvider>
           <CustomerAuthProvider>
             <CartProvider>
@@ -88,6 +104,7 @@ export default function RootLayout({
               <FloatingWidgets />
               <CartDrawer />
               <Toaster richColors position="top-right" />
+              <IntroVideo />
             </CartProvider>
           </CustomerAuthProvider>
         </ReactQueryProvider>
@@ -95,4 +112,3 @@ export default function RootLayout({
     </html>
   );
 }
-

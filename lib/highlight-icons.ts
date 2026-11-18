@@ -1,0 +1,62 @@
+import {
+  Award,
+  Backpack,
+  BookOpen,
+  Calendar,
+  Clock,
+  Compass,
+  Flag,
+  Footprints,
+  Globe,
+  GraduationCap,
+  Heart,
+  HeartPulse,
+  Leaf,
+  MapPin,
+  Medal,
+  Mountain,
+  ShieldCheck,
+  Smile,
+  Sparkles,
+  Star,
+  Tent,
+  ThumbsUp,
+  TreePine,
+  Trophy,
+  Users,
+  type LucideIcon,
+} from "lucide-react";
+
+/** Same keys as the admin's `lib/highlight-options.ts` icon picker. */
+export const HIGHLIGHT_ICONS: Record<string, LucideIcon> = {
+  trophy: Trophy,
+  users: Users,
+  "shield-check": ShieldCheck,
+  award: Award,
+  medal: Medal,
+  star: Star,
+  mountain: Mountain,
+  compass: Compass,
+  tent: Tent,
+  "tree-pine": TreePine,
+  leaf: Leaf,
+  footprints: Footprints,
+  backpack: Backpack,
+  "map-pin": MapPin,
+  globe: Globe,
+  flag: Flag,
+  calendar: Calendar,
+  clock: Clock,
+  "graduation-cap": GraduationCap,
+  "book-open": BookOpen,
+  "heart-pulse": HeartPulse,
+  heart: Heart,
+  smile: Smile,
+  "thumbs-up": ThumbsUp,
+  sparkles: Sparkles,
+};
+
+export function formatHighlightValue(value?: number | null, sign?: string) {
+  if (value === null || value === undefined || Number.isNaN(value)) return "";
+  return `${value.toLocaleString("en-US")}${sign ?? ""}`;
+}

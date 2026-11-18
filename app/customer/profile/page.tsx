@@ -320,7 +320,7 @@ export default function CustomerProfilePage() {
                 <div>
                   <p className="text-xs uppercase tracking-wider text-gray-400 font-medium">Total Gear Spend</p>
                   <p className="text-base font-semibold text-forest-800 mt-1">
-                    ৳{(customer.totalSpent || 0).toLocaleString()}
+                    ৳{(customer.totalSpent || 0).toLocaleString("en-US")}
                   </p>
                 </div>
               </div>

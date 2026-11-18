@@ -250,11 +250,11 @@ export default function ProductDetailPage() {
 
             <div className="pt-3 flex items-baseline gap-3">
               <span className="text-3xl font-extrabold text-foreground">
-                {product.price?.toLocaleString()} BDT
+                {product.price?.toLocaleString("en-US")} BDT
               </span>
               {product.compareAtPrice && product.compareAtPrice > product.price && (
                 <span className="text-base text-muted-foreground line-through">
-                  {product.compareAtPrice.toLocaleString()} BDT
+                  {product.compareAtPrice.toLocaleString("en-US")} BDT
                 </span>
               )}
             </div>

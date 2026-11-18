@@ -293,11 +293,11 @@ export default function GearStorePage() {
 
                     <div className="pt-2 flex items-baseline gap-2">
                       <span className="text-base font-extrabold text-foreground">
-                        {prod.price?.toLocaleString()} BDT
+                        {prod.price?.toLocaleString("en-US")} BDT
                       </span>
                       {prod.compareAtPrice && (
                         <span className="text-xs text-muted-foreground line-through">
-                          {prod.compareAtPrice.toLocaleString()} BDT
+                          {prod.compareAtPrice.toLocaleString("en-US")} BDT
                         </span>
                       )}
                     </div>

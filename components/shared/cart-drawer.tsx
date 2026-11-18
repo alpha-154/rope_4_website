@@ -153,7 +153,7 @@ export function CartDrawer() {
 
                       <div className="text-right">
                         <span className="font-bold text-sm text-foreground">
-                          {((item.price || 0) * item.quantity).toLocaleString()}{" "}
+                          {((item.price || 0) * item.quantity).toLocaleString("en-US")}{" "}
                           BDT
                         </span>
                       </div>
@@ -185,7 +185,7 @@ export function CartDrawer() {
                 <div className="flex justify-between text-muted-foreground">
                   <span>Subtotal:</span>
                   <span className="font-semibold text-foreground text-sm">
-                    {subtotal.toLocaleString()} BDT
+                    {subtotal.toLocaleString("en-US")} BDT
                   </span>
                 </div>
                 <div className="flex justify-between text-muted-foreground">
@@ -195,7 +195,7 @@ export function CartDrawer() {
                 <div className="flex justify-between pt-2 border-t font-bold text-base text-foreground">
                   <span>Total Due:</span>
                   <span className="text-primary font-mono">
-                    {(subtotal + (subtotal >= 5000 ? 0 : 120)).toLocaleString()}{" "}
+                    {(subtotal + (subtotal >= 5000 ? 0 : 120)).toLocaleString("en-US")}{" "}
                     BDT
                   </span>
                 </div>
